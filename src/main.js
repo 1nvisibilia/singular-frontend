@@ -1,9 +1,18 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import anime from "animejs/lib/anime.es.js";
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(router)
+app.use(router);
 
-app.mount('#app')
+app.mount("#app");
+
+anime({
+	targets: "#app",
+	translateX: 250,
+	rotate: "1turn",
+	backgroundColor: "#FFF",
+	duration: 800
+});
