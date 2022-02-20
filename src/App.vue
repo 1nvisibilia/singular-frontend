@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "@/components/HelloWorld.vue";
+import Player from "@/components/Player.vue";
 </script>
 
 <template>
@@ -25,6 +26,8 @@ import HelloWorld from "@/components/HelloWorld.vue";
     </header>
 
     <RouterView></RouterView>
+
+    <Player></Player>
   </div>
 </template>
 
