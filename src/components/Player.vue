@@ -16,9 +16,9 @@ export default {
 			console.log("event key", event.key);
 			if (event.key === "d" || event.key === "D") {
 				console.log("V");
-				++this.locationLeft;
+				this.locationLeft += 3;
 			} else if (event.key === "a" || event.key === "A") {
-				--this.locationLeft;
+				this.locationLeft -= 3;
 			}
 		});
 	}
