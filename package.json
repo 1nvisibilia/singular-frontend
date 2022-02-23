@@ -2,7 +2,7 @@
   "name": "singular",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 8000",
     "build": "vite build",
     "preview": "vite preview --port 5050",
     "old-lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "animejs": "^3.2.1",
+    "axios": "^0.26.0",
+    "socket.io-client": "^4.4.1",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12"
   },
