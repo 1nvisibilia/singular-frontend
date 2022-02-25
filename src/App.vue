@@ -1,23 +1,51 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import Player from "@/components/Player.vue";
+import Player from "./components/Player.vue";
+import GameBoard from "./components/GameBoard.vue";
+import ChatBox from "./components/ChatBox.vue";
+</script>
+
+<script>
+export default {
+  components: {
+    GameBoard,
+    ChatBox
+  },
+  props: {
+    gameBoardSize: Object,
+    chatBoxSize: Object
+  },
+  mounted() {
+    console.log(this.gameBoardSize);
+  }
+};
 </script>
 
 <template>
-  <div>
-    <Player></Player>
+  <div id="app">
+    <GameBoard :gameBoardSize="gameBoardSize"></GameBoard>
+    <ChatBox :chatBoxSize="chatBoxSize"></ChatBox>
+    <!-- <Player></Player> -->
   </div>
 </template>
 
 <style>
-@import "@/assets/base.css";
+@import "./assets/base.css";
+
+#app-wrapper {
+  display: table;
+  position: absolute;
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+  font-weight: normal;
+}
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+  margin: 0;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 header {
@@ -68,7 +96,7 @@ nav a:first-of-type {
   border: 0;
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
   body {
     display: flex;
     place-items: center;
@@ -104,5 +132,5 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
+} */
 </style>

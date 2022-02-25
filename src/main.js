@@ -11,12 +11,22 @@ import anime from "animejs/lib/anime.es.js";
 
 const socket = io("http://localhost:9000/");
 
+const appData = {
+	gameBoardSize: {
+		width: 1000,
+		height: 650
+	},
+	chatBoxSize: {
+		width: 300,
+		height: 650
+	}
+}
 
-const app = createApp(App);
+const app = createApp(App, appData);
 
 app.use(router);
 
-app.mount("#app");
+app.mount("#app-wrapper");
 
 // anime({
 // 	targets: "#app",
