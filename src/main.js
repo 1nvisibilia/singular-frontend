@@ -6,7 +6,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 
 import { BackendURL } from "./backend";
-import anime from "animejs/lib/anime.es.js";
+// import anime from "animejs/lib/anime.es.js";
 
 
 const socket = io("http://localhost:9000/");
@@ -20,7 +20,7 @@ const appData = {
 		width: 300,
 		height: 650
 	}
-}
+};
 
 const app = createApp(App, appData);
 

@@ -1,6 +1,6 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
-import Player from "./components/Player.vue";
+// import { RouterLink, RouterView } from "vue-router";
+// import Player from "./components/Player.vue";
 import GameBoard from "./components/GameBoard.vue";
 import ChatBox from "./components/ChatBox.vue";
 </script>
