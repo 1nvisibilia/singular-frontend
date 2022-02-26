@@ -1,6 +1,5 @@
 <script setup>
 // import { RouterLink, RouterView } from "vue-router";
-// import Player from "./components/Player.vue";
 import GameBoard from "./components/GameBoard.vue";
 import ChatBox from "./components/ChatBox.vue";
 </script>
@@ -25,7 +24,6 @@ export default {
 	<div id="app">
 		<GameBoard :gameBoardSize="gameBoardSize"></GameBoard>
 		<ChatBox :chatBoxSize="chatBoxSize"></ChatBox>
-		<!-- <Player></Player> -->
 	</div>
 </template>
 
