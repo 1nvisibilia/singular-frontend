@@ -46,6 +46,7 @@ export default {
   text-align: center;
   display: table-cell;
   vertical-align: middle;
+  white-space: nowrap;
 }
 
 header {

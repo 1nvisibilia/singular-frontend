@@ -4,12 +4,12 @@ import router from "./router";
 
 import axios from "axios";
 import { io } from "socket.io-client";
+import { setupSocketIOClient } from "./socket-client.js";
 
 import { BackendURL } from "./backend";
 // import anime from "animejs/lib/anime.es.js";
 
-
-const socket = io("http://localhost:9000/");
+setupSocketIOClient(io); // returns the socket object
 
 const appData = {
 	gameBoardSize: {
@@ -38,7 +38,7 @@ app.mount("#app-wrapper");
 
 console.log(BackendURL);
 
-axios.get(BackendURL + "/api/sup", { method: "GET" })
+axios(BackendURL + "/api/sup", { method: "GET" })
 	.then((data) => {
 		console.log(data);
 		// 	return data.text();
