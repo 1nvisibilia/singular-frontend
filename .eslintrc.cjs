@@ -11,6 +11,9 @@ module.exports = {
 		"commonjs": true,
 		"es2021": true
 	},
+	"parserOptions": {
+		"ecmaVersion": "latest"
+	},
 	"rules": {
 		"indent": [
 			"error",
