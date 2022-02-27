@@ -11,6 +11,8 @@ export default {
 		ChatBox
 	},
 	props: {
+		gameCanvasID: String,
+		chatBoxContainerID: String,
 		gameBoardSize: Object,
 		chatBoxSize: Object
 	},
@@ -22,8 +24,8 @@ export default {
 
 <template>
 	<div id="app">
-		<GameBoard :gameBoardSize="gameBoardSize"></GameBoard>
-		<ChatBox :chatBoxSize="chatBoxSize"></ChatBox>
+		<GameBoard v-bind:gameBoardSize="gameBoardSize" v-bind:elementID="gameCanvasID"></GameBoard>
+		<ChatBox v-bind:chatBoxSize="chatBoxSize" v-bind:elementID="chatBoxContainerID"></ChatBox>
 	</div>
 </template>
 

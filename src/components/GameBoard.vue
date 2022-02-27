@@ -3,11 +3,13 @@ export default {
 	data() {
 		return {
 			width: 0,
-			height: 0
+			height: 0,
+			borderWidth: 3
 		};
 	},
 	props: {
-		gameBoardSize: Object
+		gameBoardSize: Object,
+		elementID: String
 	},
 	methods: {
 		onClick() {
@@ -22,18 +24,25 @@ export default {
 </script>
 
 <template>
-	<div v-on:keyup.enter="onClick" id="gameboard-container"></div>
+	<div id="gameboard-container" v-on:keyup.enter="onClick">
+		<canvas v-bind:id="elementID"></canvas>
+	</div>
 </template>
 
 <style scoped>
 #gameboard-container {
-	margin-right: 30px;
+	margin: 0 30px 0 0;
+	padding: 0;
 	display: inline-block;
 	left: 0px;
 	border-color: black;
-	border-width: 2px;
+	border-width: v-bind(borderWidth + "px");
 	border-style: solid;
-	width: v-bind(width + "px");
-	height: v-bind(height + "px");
+	width: v-bind(width + borderWidth + "px");
+	height: v-bind(height + borderWidth + "px");
+}
+
+#game-canvas {
+	padding: 0;
 }
 </style>

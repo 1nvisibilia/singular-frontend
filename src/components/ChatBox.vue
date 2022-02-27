@@ -3,11 +3,13 @@ export default {
 	data() {
 		return {
 			width: 0,
-			height: 0
+			height: 0,
+			borderWidth: 3
 		};
 	},
 	props: {
-		chatBoxSize: Object
+		chatBoxSize: Object,
+		elementID: String
 	},
 	methods: {
 		onClick() {
@@ -22,7 +24,7 @@ export default {
 </script>
 
 <template>
-	<div v-on:keyup.enter="onClick" id="chatbox-container"></div>
+	<div v-bind:id="elementID" v-on:keyup.enter="onClick"></div>
 </template>
 
 <style scoped>
@@ -31,9 +33,9 @@ export default {
 	display: inline-block;
 	left: 0px;
 	border-color: black;
-	border-width: 2px;
+	border-width: v-bind(borderWidth + "px");
 	border-style: solid;
-	width: v-bind(width + "px");
-	height: v-bind(height + "px");
+	width: v-bind(width + borderWidth + "px");
+	height: v-bind(height + borderWidth + "px");
 }
 </style>
