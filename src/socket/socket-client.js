@@ -34,7 +34,7 @@ function setupSocketIOClient(canvas) {
 				canvasEngine.renderCircle("lightblue", player.xCord, player.yCord, 30);
 			}
 		});
-	})
+	});
 	return socket;
 }
 
