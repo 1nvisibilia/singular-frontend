@@ -17,7 +17,6 @@ export default {
 		chatBoxSize: Object
 	},
 	mounted() {
-		console.log(this.gameBoardSize);
 	}
 };
 </script>

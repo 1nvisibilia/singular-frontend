@@ -1,3 +1,5 @@
+const playerCellWidth = 3;
+
 class CanvasEngine {
 	/**
 	 * @type { HTMLElement } element
@@ -34,10 +36,20 @@ class CanvasEngine {
 	 * @param { Number } radius
 	 */
 	renderCircle(color, xCord, yCord, radius) {
+		this.context.lineWidth = playerCellWidth;
 		this.context.beginPath();
 		this.context.arc(xCord, yCord, radius, 0, Math.PI * 2);
-		this.context.strokeStyle = color;
+		this.context.strokeStyle = "cyan";
 		this.context.stroke();
+		this.context.fillStyle = color;
+		this.context.fill();
+	}
+
+	/**
+	 * @returns { void }
+	 */
+	clearScreen() {
+		this.context.clearRect(0, 0, this.width, this.height);
 	}
 }
 

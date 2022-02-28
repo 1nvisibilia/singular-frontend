@@ -3,12 +3,8 @@ import CanvasEngine from "../canvas/CanvasEngine.js";
 import { BackendURL } from "../backend.js";
 
 const currentGameStatus = "current game status";
-const newPlayerJoined = "new user joined";
-
-/**
- * @param { HTMLElement } canvas
- * @param { Player[] } players
- */
+const aPlayerJoined = "a user joined";
+const aPlayerLeft = "a player left";
 
 /**
  * @param { HTMLElement } canvas
@@ -20,14 +16,25 @@ function setupSocketIOClient(canvas) {
 
 	socket.on(currentGameStatus, (game) => {
 		game.players.forEach(player => {
-			canvasEngine.renderCircle("blue", player.xCord, player.yCord, 10);
+			if (player) {
+				canvasEngine.renderCircle("lightblue", player.xCord, player.yCord, 30);
+			}
 		});
 	});
 
-	socket.on(newPlayerJoined, (player) => {
-		canvasEngine.renderCircle("blue", player.xCord, player.yCord, 10);
+	socket.on(aPlayerJoined, (player) => {
+		canvasEngine.renderCircle("lightblue", player.xCord, player.yCord, 30);
 		console.log(player.id, "has joined us");
 	});
+
+	socket.on(aPlayerLeft, (game) => {
+		canvasEngine.clearScreen();
+		game.players.forEach(player => {
+			if (player) {
+				canvasEngine.renderCircle("lightblue", player.xCord, player.yCord, 30);
+			}
+		});
+	})
 	return socket;
 }
 
