@@ -25,7 +25,7 @@ export default {
 
 <template>
 	<div id="gameboard-container" v-on:keyup.enter="onClick">
-		<canvas v-bind:id="elementID"></canvas>
+		<canvas v-bind:id="elementID" tabindex="0"></canvas>
 	</div>
 </template>
 
@@ -42,7 +42,9 @@ export default {
 	height: v-bind(height + borderWidth + "px");
 }
 
+/* this is still hardcoded */
 #game-canvas {
+	outline: none;
 	padding: 0;
 }
 </style>
