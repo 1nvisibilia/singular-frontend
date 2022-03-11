@@ -5,6 +5,9 @@ import { BackendURL } from "../backend.js";
 const currentGameStatus = "current game status";
 const aPlayerJoined = "a user joined";
 const aPlayerLeft = "a player left";
+const requestInput = "request input";
+const sendBackInput = "send back input";
+const sendGameData = "send game data";
 
 /**
  * @param { HTMLElement } canvas
@@ -35,9 +38,28 @@ function setupSocketIOClient(canvas) {
 			}
 		});
 	});
-	return socket;
+	return { socket, canvasEngine };
+}
+
+function sendUserInput(socket, controller) {
+	socket.on(requestInput, () => {
+		if (controller.inputChanged === true) {
+			controller.inputChanged = false;
+			socket.emit(sendBackInput, controller.inputState);
+		} else {
+			socket.emit(sendBackInput, null);
+		}
+	})
+}
+
+function receiveUpdate(socket, canvasEngine) {
+	socket.on(sendGameData, (game) => {
+		console.log(game.players);
+	});
 }
 
 export {
-	setupSocketIOClient
+	setupSocketIOClient,
+	sendUserInput,
+	receiveUpdate
 };

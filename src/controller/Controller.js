@@ -7,7 +7,7 @@ const mouseCoolDown = 200;
 
 class Controller {
 	/**
-	 * @typedef { { up: Boolean, down: Boolean, left: Boolean, right: Boolean, click: Boolean } } InputState
+	 * @typedef { { up: Boolean, down: Boolean, left: Boolean, right: Boolean } } InputState
 	 */
 	/**
 	 * @type { HTMLElement } element
@@ -20,23 +20,42 @@ class Controller {
 	inputState;
 
 	/**
+	 * @type { InputState }
+	 */
+	prevInputState;
+
+	/**
 	 * @type { Number | null }
 	 */
 	mouseInterval;
+
+	/**
+	 * @type { Number | null }
+	 */
+	controlInterval;
+
+	/**
+	 * @type { Boolean }
+	 */
+	inputChanged;
+
 	/**
 	 * 
 	 * @param { HTMLElement } element 
 	 */
 	constructor(element) {
 		this.element = element;
-		this.mouseCoolDown = false;
+		this.inputChanged = false;
 		this.inputState = {};
 		this.inputState[up] = false;
 		this.inputState[down] = false;
 		this.inputState[left] = false;
 		this.inputState[right] = false;
-		this.inputState[click] = false;
+
+		// Deep Copy the inputStates
+		this.prevInputState = { ...this.inputState };
 		this.mouseInterval = null;
+		this.controlInterval = null;
 	}
 
 	/**
@@ -106,6 +125,31 @@ class Controller {
 			clearInterval(this.mouseInterval);
 			this.mouseInterval = null;
 		});
+	}
+
+	/**
+	 * @returns { void }
+	 */
+	registerControlInterval() {
+		// Register control listener to listen for changes in input
+		this.controlInterval = setInterval(() => {
+			if (this.inputState[up] !== this.prevInputState[up] ||
+				this.inputState[down] !== this.prevInputState[down] ||
+				this.inputState[left] !== this.prevInputState[left] ||
+				this.inputState[right] !== this.prevInputState[right]) {
+				console.log(this.inputState);
+				this.prevInputState = { ...this.inputState };
+				// The front-end socket needs to manually change this to false.
+				this.inputChanged = true;
+			}
+		}, 100);
+	}
+
+	/**
+	 * @returns { void }
+	 */
+	unregisterControlInterval() {
+		clearInterval(this.controlInterval);
 	}
 }
 
