@@ -155,7 +155,7 @@ class Controller {
 
 export {
 	Controller,
-	up,
+	up, // take a look if we need to export these string constants
 	down,
 	left,
 	right,

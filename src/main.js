@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import axios from "axios";
 
-import { Controller, up, down, left, right, click } from "./controller/Controller.js";
+import { Controller } from "./controller/Controller.js";
 import { setupSocketIOClient, sendUserInput, receiveUpdate } from "./socket/socket-client.js";
 import { BackendURL } from "./backend";
 // import anime from "animejs/lib/anime.es.js";
