@@ -54,10 +54,7 @@ function sendUserInput(socket, controller) {
 
 function receiveUpdate(socket, canvasEngine) {
 	socket.on(sendGameData, (game) => {
-		console.log(game.players);
-		// draw something with canvasEngine and request animation frame as the next step.
-		// draw something with canvasEngine and request animation frame as the next step.
-		// draw something with canvasEngine and request animation frame as the next step.
+		canvasEngine.startAnimation(game.players);
 	});
 }
 

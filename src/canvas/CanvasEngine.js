@@ -17,6 +17,15 @@ class CanvasEngine {
 	 * @type { Number } height
 	 */
 	height;
+	/**
+	 * @type { Boolean } animationStopper
+	 */
+	animationStopper;
+
+	/**
+	 * @type { Number } prevAnimationTimeStamp
+	 */
+	prevAnimationTimeStamp;
 
 	/**
 	 * @param { HTMLElement } canvasElement
@@ -26,6 +35,8 @@ class CanvasEngine {
 		this.context = canvasElement.getContext("2d");
 		this.width = canvasElement.width;
 		this.height = canvasElement.height;
+		this.animationStopper = true;
+		this.prevAnimationTimeStamp = 0;
 		console.log(this);
 	}
 
@@ -50,6 +61,23 @@ class CanvasEngine {
 	 */
 	clearScreen() {
 		this.context.clearRect(0, 0, this.width, this.height);
+	}
+
+	/**
+	 * @param { Object[] } entities
+	 */
+	startAnimation(entities) {
+		this.animationStopper = true;
+		requestAnimationFrame((frameRate) => {
+			console.log(frameRate - this.prevAnimationTimeStamp);
+			this.prevAnimationTimeStamp = frameRate;
+			this.clearScreen();
+			entities.forEach((entity) => {
+				if (entity !== null) {
+					this.renderCircle("lightblue", entity.xCord, entity.yCord, 30);
+				}
+			});
+		});
 	}
 }
 
