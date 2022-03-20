@@ -64,7 +64,7 @@ class Controller {
 		this.inputState[mouse] = {};
 
 		// Deep Copy the inputStates
-		this.prevInputState = { ...this.inputState }; // check this.
+		this.prevInputState = structuredClone(this.inputState);
 		this.mouseInterval = null;
 		this.controlInterval = null;
 	}
@@ -148,6 +148,8 @@ class Controller {
 				this.inputState.left !== this.prevInputState.left ||
 				this.inputState.right !== this.prevInputState.right) {
 				console.log(this.inputState);
+				// we will see when this is necessary
+				// this.prevInputState = structuredClone(this.inputState);
 				this.prevInputState = { ...this.inputState };
 				this.inputState.type = move;
 				// The front-end socket needs to manually change this to false.
