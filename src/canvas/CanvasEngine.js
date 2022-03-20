@@ -69,7 +69,7 @@ class CanvasEngine {
 	startAnimation(entities) {
 		this.animationStopper = true;
 		requestAnimationFrame((frameRate) => {
-			console.log(frameRate - this.prevAnimationTimeStamp);
+			// console.log(frameRate - this.prevAnimationTimeStamp);
 			this.prevAnimationTimeStamp = frameRate;
 			this.clearScreen();
 			entities.forEach((entity) => {
