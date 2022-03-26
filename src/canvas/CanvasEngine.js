@@ -64,19 +64,23 @@ class CanvasEngine {
 	}
 
 	/**
-	 * @param { Object[] } entities
+	 * @param { Game } game
 	 */
-	startAnimation(entities) {
+	startAnimation(game) {
 		this.animationStopper = true;
 		requestAnimationFrame((frameRate) => {
 			// console.log(frameRate - this.prevAnimationTimeStamp);
 			this.prevAnimationTimeStamp = frameRate;
 			this.clearScreen();
-			entities.forEach((entity) => {
-				if (entity !== null) {
-					this.renderCircle("lightblue", entity.xCord, entity.yCord, 30);
+			game.players.forEach((player) => {
+				if (player !== null) {
+					this.renderCircle("lightblue", player.xCord, player.yCord, 30);
 				}
 			});
+
+			game.bullets.forEach((bullet) => {
+				this.renderCircle("lightblue", bullet.xCord, bullet.yCord, 10);
+			})
 		});
 	}
 }

@@ -54,7 +54,7 @@ function sendUserInput(socket, controller) {
 
 function receiveUpdate(socket, canvasEngine) {
 	socket.on(sendGameData, (game) => {
-		canvasEngine.startAnimation(game.players);
+		canvasEngine.startAnimation(game);
 	});
 }
 

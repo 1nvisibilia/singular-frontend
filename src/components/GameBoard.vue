@@ -38,8 +38,8 @@ export default {
 	border-color: black;
 	border-width: v-bind(borderWidth + "px");
 	border-style: solid;
-	width: v-bind(width + borderWidth + "px");
-	height: v-bind(height + borderWidth + "px");
+	width: v-bind(width + borderWidth * 2 + "px");
+	height: v-bind(height + borderWidth * 2 + "px");
 }
 
 /* this is still hardcoded */
