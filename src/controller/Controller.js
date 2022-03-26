@@ -64,7 +64,7 @@ class Controller {
 		this.inputState[mouse] = {};
 
 		// Deep Copy the inputStates
-		this.prevInputState = structuredClone(this.inputState);
+		this.prevInputState = window.structuredClone(this.inputState);
 		this.mouseInterval = null;
 		this.controlInterval = null;
 	}

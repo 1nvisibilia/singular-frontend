@@ -80,7 +80,7 @@ class CanvasEngine {
 
 			game.bullets.forEach((bullet) => {
 				this.renderCircle("lightblue", bullet.xCord, bullet.yCord, 10);
-			})
+			});
 		});
 	}
 }
