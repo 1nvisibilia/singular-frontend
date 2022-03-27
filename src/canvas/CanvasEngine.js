@@ -1,5 +1,4 @@
 import CanvasData from "./UIData.json";
-const playerCellWidth = 3;
 
 class CanvasEngine {
 	/**
