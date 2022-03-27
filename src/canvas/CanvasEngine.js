@@ -1,3 +1,4 @@
+import CanvasData from "./UIData.json";
 const playerCellWidth = 3;
 
 class CanvasEngine {
@@ -41,18 +42,22 @@ class CanvasEngine {
 	}
 
 	/**
-	 * @param { String } color
-	 * @param { Number} xCord
+	 * @param { String } entityType
+	 * @param { Number } xCord
 	 * @param { Number } yCord
-	 * @param { Number } radius
 	 */
-	renderCircle(color, xCord, yCord, radius) {
-		this.context.lineWidth = playerCellWidth;
+	renderCircle(entityType, xCord, yCord) {
+		const entityData = CanvasData[entityType];
+		if (entityData === undefined) {
+			throw new Error("Undefined Entity Type!");
+		}
+
+		this.context.lineWidth = entityData.borderWidth;
 		this.context.beginPath();
-		this.context.arc(xCord, yCord, radius, 0, Math.PI * 2);
-		this.context.strokeStyle = "cyan";
+		this.context.arc(xCord, yCord, entityData.radius, 0, Math.PI * 2);
+		this.context.strokeStyle = entityData.border;
 		this.context.stroke();
-		this.context.fillStyle = color;
+		this.context.fillStyle = entityData.color;
 		this.context.fill();
 	}
 
@@ -74,12 +79,12 @@ class CanvasEngine {
 			this.clearScreen();
 			game.players.forEach((player) => {
 				if (player !== null) {
-					this.renderCircle("lightblue", player.xCord, player.yCord, 30);
+					this.renderCircle("player", player.xCord, player.yCord);
 				}
 			});
 
 			game.bullets.forEach((bullet) => {
-				this.renderCircle("lightblue", bullet.xCord, bullet.yCord, 10);
+				this.renderCircle("bullet", bullet.xCord, bullet.yCord);
 			});
 		});
 	}

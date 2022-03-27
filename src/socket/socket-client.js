@@ -20,13 +20,13 @@ function setupSocketIOClient(canvas) {
 	socket.on(currentGameStatus, (game) => {
 		game.players.forEach(player => {
 			if (player) {
-				canvasEngine.renderCircle("lightblue", player.xCord, player.yCord, 30);
+				canvasEngine.renderCircle("player", player.xCord, player.yCord);
 			}
 		});
 	});
 
 	socket.on(aPlayerJoined, (player) => {
-		canvasEngine.renderCircle("lightblue", player.xCord, player.yCord, 30);
+		canvasEngine.renderCircle("player", player.xCord, player.yCord);
 		console.log(player.id, "has joined us");
 	});
 
@@ -34,7 +34,7 @@ function setupSocketIOClient(canvas) {
 		canvasEngine.clearScreen();
 		game.players.forEach(player => {
 			if (player) {
-				canvasEngine.renderCircle("lightblue", player.xCord, player.yCord, 30);
+				canvasEngine.renderCircle("player", player.xCord, player.yCord);
 			}
 		});
 	});
