@@ -1,3 +1,7 @@
+<script setup>
+import { chatBox } from "../UIData.json";
+</script>
+
 <script>
 export default {
 	data() {
@@ -17,8 +21,8 @@ export default {
 		}
 	},
 	mounted() {
-		this.width = this.chatBoxSize.width;
-		this.height = this.chatBoxSize.height;
+		this.width = chatBox.width;
+		this.height = chatBox.height;
 	}
 };
 </script>

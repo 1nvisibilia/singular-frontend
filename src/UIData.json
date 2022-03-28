@@ -10,5 +10,13 @@
 		"color": "#C95CFF",
 		"border": "#AD08FF",
 		"borderWidth": 9
+	},
+	"gameBoard": {
+		"width": 1000,
+		"height": 650
+	},
+	"chatBox": {
+		"width": 300,
+		"height": 650
 	}
 }

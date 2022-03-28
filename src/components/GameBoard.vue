@@ -1,14 +1,22 @@
+<script setup>
+import { Controller } from "../controller/Controller";
+import SocketClient from "../socket/socket-client.js";
+import { gameBoard } from "../UIData.json";
+</script>
+
 <script>
 export default {
 	data() {
 		return {
 			width: 0,
 			height: 0,
-			borderWidth: 3
+			borderWidth: 3,
+			canvasEngine: undefined,
+			controller: undefined,
+			socket: undefined
 		};
 	},
 	props: {
-		gameBoardSize: Object,
 		elementID: String
 	},
 	methods: {
@@ -17,8 +25,29 @@ export default {
 		}
 	},
 	mounted() {
-		this.width = this.gameBoardSize.width;
-		this.height = this.gameBoardSize.height;
+		// Add the canvas size attribute.
+		this.width = gameBoard.width;
+		this.height = gameBoard.height;
+
+		// Adds the canvas size independent of Vue's renderings.
+		const gameCanvas = document.getElementById(this.elementID);
+		gameCanvas.width = gameBoard.width;
+		gameCanvas.height = gameBoard.height;
+
+		// setup the game controllers
+		this.controller = new Controller(gameCanvas);
+		this.controller.activeListeners(); // register all the event listener
+		this.controller.registerControlInterval(); // start listening for changes
+
+		// Setup the socket and Canvas rendering engine.
+		const { socket, canvasEngine } = SocketClient.setupSocketIOClient(gameCanvas);
+		SocketClient.sendUserInput(socket, this.controller);
+		SocketClient.receiveUpdate(socket, canvasEngine);
+		this.canvasEngine = canvasEngine;
+		this.socket = socket;
+
+		// Send back the socket to the parent.
+		 this.$emit("gameBoardResponse", socket);
 	}
 };
 </script>

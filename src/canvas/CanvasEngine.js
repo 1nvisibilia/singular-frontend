@@ -1,4 +1,4 @@
-import CanvasData from "./UIData.json";
+import CanvasData from "../UIData.json";
 
 class CanvasEngine {
 	/**

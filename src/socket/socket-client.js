@@ -58,7 +58,7 @@ function receiveUpdate(socket, canvasEngine) {
 	});
 }
 
-export {
+export default {
 	setupSocketIOClient,
 	sendUserInput,
 	receiveUpdate

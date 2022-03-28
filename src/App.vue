@@ -2,29 +2,56 @@
 // import { RouterLink, RouterView } from "vue-router";
 import GameBoard from "./components/GameBoard.vue";
 import ChatBox from "./components/ChatBox.vue";
+import HomePage from "./components/HomePage.vue";
+
+import UIData from "./UIData.json";
 </script>
 
 <script>
 export default {
 	components: {
 		GameBoard,
-		ChatBox
+		ChatBox,
+		HomePage
+	},
+	data() {
+		return {
+			constructGameBoard: false,
+			constructCharBox: false,
+			socket: undefined
+		};
+	},
+	methods: {
+		gameBoardResponse(socket) {
+			// probably no need for this later on.
+			this.socket = socket;
+
+			// Set up The Game Canvas
+			const gameCanvas = document.getElementById(this.gameCanvasID);
+			// Set up the Canvas size, independent from Vue's rendering.
+			gameCanvas.width = UIData.gameBoard.width;
+			gameCanvas.height = UIData.gameBoard.height;
+		}
 	},
 	props: {
 		gameCanvasID: String,
-		chatBoxContainerID: String,
-		gameBoardSize: Object,
-		chatBoxSize: Object
+		chatBoxContainerID: String
 	},
 	mounted() {
+		// const chatBox = document.getElementById(appData.chatBoxContainerID); //////////////////////////
 	}
 };
 </script>
 
 <template>
 	<div id="app">
-		<GameBoard v-bind:gameBoardSize="gameBoardSize" v-bind:elementID="gameCanvasID"></GameBoard>
-		<ChatBox v-bind:chatBoxSize="chatBoxSize" v-bind:elementID="chatBoxContainerID"></ChatBox>
+		<HomePage></HomePage>
+		<GameBoard
+			v-if="constructGameBoard"
+			v-bind:elementID="gameCanvasID"
+			v-on:gameBoardResponse="gameBoardResponse"
+		></GameBoard>
+		<ChatBox v-if="constructCharBox" v-bind:elementID="chatBoxContainerID"></ChatBox>
 	</div>
 </template>
 
