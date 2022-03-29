@@ -47,7 +47,7 @@ export default {
 		this.socket = socket;
 
 		// Send back the socket to the parent.
-		this.$emit("gameBoardResponse", socket);
+		this.$emit("gameBoardInitResponse", socket);
 	}
 };
 </script>

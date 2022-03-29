@@ -22,7 +22,7 @@ export default {
 		};
 	},
 	methods: {
-		gameBoardResponse(socket) {
+		gameBoardInitResponse(socket) {
 			// probably no need for this later on.
 			this.socket = socket;
 
@@ -31,6 +31,14 @@ export default {
 			// Set up the Canvas size, independent from Vue's rendering.
 			gameCanvas.width = UIData.gameBoard.width;
 			gameCanvas.height = UIData.gameBoard.height;
+		},
+		playGame(response) {
+			console.log(response);
+			if (response.action === "create") {
+				// create a room
+			} else if (response.action === "join" && response.room !== undefined) {
+				// join a room
+			}
 		}
 	},
 	props: {
@@ -45,11 +53,11 @@ export default {
 
 <template>
 	<div id="app">
-		<HomePage></HomePage>
+		<HomePage v-on:playGame="playGame"></HomePage>
 		<GameBoard
 			v-if="constructGameBoard"
 			v-bind:elementID="gameCanvasID"
-			v-on:gameBoardResponse="gameBoardResponse"
+			v-on:gameBoardInitResponse="gameBoardInitResponse"
 		></GameBoard>
 		<ChatBox v-if="constructCharBox" v-bind:elementID="chatBoxContainerID"></ChatBox>
 	</div>
