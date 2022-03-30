@@ -1,4 +1,5 @@
 <script setup>
+import { Socket } from "socket.io-client";
 import { Controller } from "../controller/Controller";
 import SocketClient from "../socket/socket-client.js";
 import { gameBoard } from "../UIData.json";
@@ -12,12 +13,13 @@ export default {
 			height: 0,
 			borderWidth: 3,
 			canvasEngine: undefined,
-			controller: undefined,
-			socket: undefined
+			controller: undefined
 		};
 	},
 	props: {
-		elementID: String
+		elementID: String,
+		roomID: String,
+		socket: Object
 	},
 	methods: {
 		onClick() {
@@ -39,12 +41,13 @@ export default {
 		this.controller.activeListeners(); // register all the event listener
 		this.controller.registerControlInterval(); // start listening for changes
 
+		console.log("asdfasdf  " + this.roomID);
 		// Setup the socket and Canvas rendering engine.
-		const { socket, canvasEngine } = SocketClient.setupSocketIOClient(gameCanvas);
+		const { socket, canvasEngine } = SocketClient.setupSocketIOClient(this.socket, gameCanvas, this.roomID);
 		SocketClient.sendUserInput(socket, this.controller);
 		SocketClient.receiveUpdate(socket, canvasEngine);
 		this.canvasEngine = canvasEngine;
-		this.socket = socket;
+		// this.socket = socket;
 
 		// Send back the socket to the parent.
 		this.$emit("gameBoardInitResponse", socket);

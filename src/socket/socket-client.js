@@ -1,6 +1,5 @@
-import { io } from "socket.io-client";
+import { Socket } from "socket.io-client";
 import CanvasEngine from "../canvas/CanvasEngine.js";
-import { BackendURL } from "../backend.js";
 
 const currentGameStatus = "current game status";
 const aPlayerJoined = "a user joined";
@@ -8,14 +7,20 @@ const aPlayerLeft = "a player left";
 const requestInput = "request input";
 const sendBackInput = "send back input";
 const sendGameData = "send game data";
+const joinRoom = "join room";
+const leaveRoom = "leave room";
 
 /**
+ * @param { Socket } socket
  * @param { HTMLElement } canvas
+ * @param { String } roomID
  * @returns { void }
  */
-function setupSocketIOClient(canvas) {
+function setupSocketIOClient(socket, canvas, roomID) {
 	const canvasEngine = new CanvasEngine(canvas);
-	const socket = io(BackendURL);
+
+	// what to do next
+	socket.emit(joinRoom, roomID);
 
 	socket.on(currentGameStatus, (game) => {
 		game.players.forEach(player => {

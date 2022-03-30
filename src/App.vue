@@ -1,6 +1,7 @@
 <script setup>
 // Backend API setup
 import axios from "axios";
+import { io } from "socket.io-client";
 import { BackendURL } from "./backend";
 
 // VueJS setup
@@ -23,6 +24,7 @@ export default {
 			displayHomePage: true,
 			constructGameBoard: false,
 			constructCharBox: false,
+			roomID: undefined,
 			socket: undefined
 		};
 	},
@@ -41,8 +43,11 @@ export default {
 			console.log(response);
 			if (response.action === "create") {
 				// create a room
-				axios(BackendURL + "/api/game/create", { method: "POST" }).then((data) => {
-					console.log(data);
+				axios(BackendURL + "/api/game/create", { method: "POST" }).then((response) => {
+					this.roomID = response.data;
+					this.displayHomePage = false;
+					this.constructGameBoard = true;
+					this.constructCharBox = true;
 					// 	return data.text();
 					// })
 					// .then((response) => {
@@ -58,6 +63,8 @@ export default {
 		chatBoxContainerID: String
 	},
 	mounted() {
+		// Crate the socket connection
+		this.socket = io(BackendURL);
 		// const chatBox = document.getElementById(appData.chatBoxContainerID); //////////////////////////
 	}
 };
@@ -69,6 +76,8 @@ export default {
 		<GameBoard
 			v-if="constructGameBoard"
 			v-bind:elementID="gameCanvasID"
+			v-bind:socket="socket"
+			v-bind:roomID="roomID"
 			v-on:gameBoardInitResponse="gameBoardInitResponse"
 		></GameBoard>
 		<ChatBox v-if="constructCharBox" v-bind:elementID="chatBoxContainerID"></ChatBox>
