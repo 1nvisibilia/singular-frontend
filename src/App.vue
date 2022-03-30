@@ -1,9 +1,13 @@
 <script setup>
+// Backend API setup
+import axios from "axios";
+import { BackendURL } from "./backend";
+
+// VueJS setup
 // import { RouterLink, RouterView } from "vue-router";
 import GameBoard from "./components/GameBoard.vue";
 import ChatBox from "./components/ChatBox.vue";
 import HomePage from "./components/HomePage.vue";
-
 import UIData from "./UIData.json";
 </script>
 
@@ -16,6 +20,7 @@ export default {
 	},
 	data() {
 		return {
+			displayHomePage: true,
 			constructGameBoard: false,
 			constructCharBox: false,
 			socket: undefined
@@ -36,6 +41,13 @@ export default {
 			console.log(response);
 			if (response.action === "create") {
 				// create a room
+				axios(BackendURL + "/api/game/create", { method: "POST" }).then((data) => {
+					console.log(data);
+					// 	return data.text();
+					// })
+					// .then((response) => {
+					// 	console.log(response);
+				});
 			} else if (response.action === "join" && response.room !== undefined) {
 				// join a room
 			}
@@ -53,7 +65,7 @@ export default {
 
 <template>
 	<div id="app">
-		<HomePage v-on:playGame="playGame"></HomePage>
+		<HomePage v-if="displayHomePage" v-on:playGame="playGame"></HomePage>
 		<GameBoard
 			v-if="constructGameBoard"
 			v-bind:elementID="gameCanvasID"
