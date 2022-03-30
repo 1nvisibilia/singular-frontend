@@ -4,13 +4,8 @@ import router from "./router";
 
 // import anime from "animejs/lib/anime.es.js";
 
-const appData = {
-	gameCanvasID: "game-canvas",
-	chatBoxContainerID: "chatbox-container"
-};
-
 // Create and mount the main application.
-const app = createApp(App, appData);
+const app = createApp(App);
 app.use(router);
 app.mount("#app-wrapper");
 
@@ -21,5 +16,3 @@ app.mount("#app-wrapper");
 // 	backgroundColor: "#FFF",
 // 	duration: 800
 // });
-
-// console.log(BackendURL);

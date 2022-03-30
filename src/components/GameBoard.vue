@@ -11,15 +11,14 @@ export default {
 		return {
 			width: 0,
 			height: 0,
-			borderWidth: 3,
-			canvasEngine: undefined,
-			controller: undefined
+			borderWidth: 0,
+			canvasEngine: null,
+			controller: null
 		};
 	},
 	props: {
-		elementID: String,
 		roomID: String,
-		socket: Object
+		socket: Socket
 	},
 	methods: {
 		onClick() {
@@ -30,9 +29,10 @@ export default {
 		// Add the canvas size attribute.
 		this.width = gameBoard.width;
 		this.height = gameBoard.height;
+		this.borderWidth = gameBoard.borderWidth;
 
 		// Adds the canvas size independent of Vue's renderings.
-		const gameCanvas = document.getElementById(this.elementID);
+		const gameCanvas = document.getElementById("game-canvas");
 		gameCanvas.width = gameBoard.width;
 		gameCanvas.height = gameBoard.height;
 
@@ -43,21 +43,21 @@ export default {
 
 		console.log("asdfasdf  " + this.roomID);
 		// Setup the socket and Canvas rendering engine.
-		const { socket, canvasEngine } = SocketClient.setupSocketIOClient(this.socket, gameCanvas, this.roomID);
+		const { socket, canvasEngine } = SocketClient.setupSocketIOClient(
+			this.socket,
+			gameCanvas,
+			this.roomID
+		);
 		SocketClient.sendUserInput(socket, this.controller);
 		SocketClient.receiveUpdate(socket, canvasEngine);
 		this.canvasEngine = canvasEngine;
-		// this.socket = socket;
-
-		// Send back the socket to the parent.
-		this.$emit("gameBoardInitResponse", socket);
 	}
 };
 </script>
 
 <template>
 	<div id="gameboard-container" v-on:keyup.enter="onClick">
-		<canvas v-bind:id="elementID" tabindex="0"></canvas>
+		<canvas id="game-canvas" tabindex="0"></canvas>
 	</div>
 </template>
 

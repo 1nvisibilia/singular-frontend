@@ -9,7 +9,6 @@ import { BackendURL } from "./backend";
 import GameBoard from "./components/GameBoard.vue";
 import ChatBox from "./components/ChatBox.vue";
 import HomePage from "./components/HomePage.vue";
-import UIData from "./UIData.json";
 </script>
 
 <script>
@@ -23,49 +22,29 @@ export default {
 		return {
 			displayHomePage: true,
 			constructGameBoard: false,
-			constructCharBox: false,
-			roomID: undefined,
-			socket: undefined
+			constructChatBox: false,
+			roomID: null,
+			socket: null
 		};
 	},
 	methods: {
-		gameBoardInitResponse(socket) {
-			// probably no need for this later on.
-			this.socket = socket;
-
-			// Set up The Game Canvas
-			const gameCanvas = document.getElementById(this.gameCanvasID);
-			// Set up the Canvas size, independent from Vue's rendering.
-			gameCanvas.width = UIData.gameBoard.width;
-			gameCanvas.height = UIData.gameBoard.height;
-		},
-		playGame(response) {
-			console.log(response);
-			if (response.action === "create") {
+		async playGame(playRequest) {
+			console.log(playRequest);
+			if (playRequest.action === "create") {
 				// create a room
-				axios(BackendURL + "/api/game/create", { method: "POST" }).then((response) => {
-					this.roomID = response.data;
-					this.displayHomePage = false;
-					this.constructGameBoard = true;
-					this.constructCharBox = true;
-					// 	return data.text();
-					// })
-					// .then((response) => {
-					// 	console.log(response);
-				});
-			} else if (response.action === "join" && response.room !== undefined) {
+				const response = await axios(BackendURL + "/api/game/create", { method: "POST" });
+				this.roomID = response.data;
+				this.displayHomePage = false;
+				this.constructGameBoard = true;
+				this.constructChatBox = true;
+			} else if (playRequest.action === "join" && playRequest.room !== undefined) {
 				// join a room
 			}
 		}
 	},
-	props: {
-		gameCanvasID: String,
-		chatBoxContainerID: String
-	},
 	mounted() {
 		// Crate the socket connection
 		this.socket = io(BackendURL);
-		// const chatBox = document.getElementById(appData.chatBoxContainerID); //////////////////////////
 	}
 };
 </script>
@@ -75,12 +54,10 @@ export default {
 		<HomePage v-if="displayHomePage" v-on:playGame="playGame"></HomePage>
 		<GameBoard
 			v-if="constructGameBoard"
-			v-bind:elementID="gameCanvasID"
 			v-bind:socket="socket"
 			v-bind:roomID="roomID"
-			v-on:gameBoardInitResponse="gameBoardInitResponse"
 		></GameBoard>
-		<ChatBox v-if="constructCharBox" v-bind:elementID="chatBoxContainerID"></ChatBox>
+		<ChatBox v-if="constructChatBox"></ChatBox>
 	</div>
 </template>
 

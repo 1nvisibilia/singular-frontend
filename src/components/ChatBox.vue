@@ -8,27 +8,19 @@ export default {
 		return {
 			width: 0,
 			height: 0,
-			borderWidth: 3
+			borderWidth: 0
 		};
-	},
-	props: {
-		chatBoxSize: Object,
-		elementID: String
-	},
-	methods: {
-		onClick() {
-			console.log("emitted");
-		}
 	},
 	mounted() {
 		this.width = chatBox.width;
 		this.height = chatBox.height;
+		this.borderWidth = chatBox.borderWidth;
 	}
 };
 </script>
 
 <template>
-	<div v-bind:id="elementID" v-on:keyup.enter="onClick"></div>
+	<div id="chatbox-container" v-on:keyup.enter="onClick"></div>
 </template>
 
 <style scoped>
