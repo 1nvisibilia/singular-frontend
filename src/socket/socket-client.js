@@ -24,9 +24,7 @@ function setupSocketIOClient(socket, canvas, roomID) {
 
 	socket.on(currentGameStatus, (game) => {
 		game.players.forEach(player => {
-			if (player) {
-				canvasEngine.renderCircle("player", player.xCord, player.yCord);
-			}
+			canvasEngine.renderCircle("player", player.xCord, player.yCord);
 		});
 	});
 
@@ -38,9 +36,7 @@ function setupSocketIOClient(socket, canvas, roomID) {
 	socket.on(aPlayerLeft, (game) => {
 		canvasEngine.clearScreen();
 		game.players.forEach(player => {
-			if (player) {
-				canvasEngine.renderCircle("player", player.xCord, player.yCord);
-			}
+			canvasEngine.renderCircle("player", player.xCord, player.yCord);
 		});
 	});
 	return { socket, canvasEngine };
@@ -57,6 +53,10 @@ function sendUserInput(socket, controller) {
 	});
 }
 
+/**
+ * @param { Socket } socket
+ * @param { CanvasEngine } canvasEngine
+ */
 function receiveUpdate(socket, canvasEngine) {
 	socket.on(sendGameData, (game) => {
 		canvasEngine.startAnimation(game);

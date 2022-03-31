@@ -77,9 +77,7 @@ class CanvasEngine {
 			this.prevAnimationTimeStamp = frameRate;
 			this.clearScreen();
 			game.players.forEach((player) => {
-				if (player !== null) {
-					this.renderCircle("player", player.xCord, player.yCord);
-				}
+				this.renderCircle("player", player.xCord, player.yCord); // change renderCircle to just render
 			});
 
 			game.bullets.forEach((bullet) => {
