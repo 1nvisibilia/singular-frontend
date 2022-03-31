@@ -45,7 +45,7 @@ class CanvasEngine {
 	 * @param { Number } xCord
 	 * @param { Number } yCord
 	 */
-	renderCircle(entityType, xCord, yCord) {
+	render(entityType, xCord, yCord) {
 		const entityData = CanvasData[entityType];
 		if (entityData === undefined) {
 			throw new Error("Undefined Entity Type!");
@@ -77,11 +77,11 @@ class CanvasEngine {
 			this.prevAnimationTimeStamp = frameRate;
 			this.clearScreen();
 			game.players.forEach((player) => {
-				this.renderCircle("player", player.xCord, player.yCord); // change renderCircle to just render
+				this.render("player", player.xCord, player.yCord);
 			});
 
 			game.bullets.forEach((bullet) => {
-				this.renderCircle("bullet", bullet.xCord, bullet.yCord);
+				this.render("bullet", bullet.xCord, bullet.yCord);
 			});
 		});
 	}

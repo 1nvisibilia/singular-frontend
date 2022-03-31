@@ -24,19 +24,19 @@ function setupSocketIOClient(socket, canvas, roomID) {
 
 	socket.on(currentGameStatus, (game) => {
 		game.players.forEach(player => {
-			canvasEngine.renderCircle("player", player.xCord, player.yCord);
+			canvasEngine.render("player", player.xCord, player.yCord);
 		});
 	});
 
 	socket.on(aPlayerJoined, (player) => {
-		canvasEngine.renderCircle("player", player.xCord, player.yCord);
+		canvasEngine.render("player", player.xCord, player.yCord);
 		console.log(player.id, "has joined us");
 	});
 
 	socket.on(aPlayerLeft, (game) => {
 		canvasEngine.clearScreen();
 		game.players.forEach(player => {
-			canvasEngine.renderCircle("player", player.xCord, player.yCord);
+			canvasEngine.render("player", player.xCord, player.yCord);
 		});
 	});
 	return { socket, canvasEngine };
