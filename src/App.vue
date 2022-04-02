@@ -6,23 +6,20 @@ import { BackendURL } from "./backend";
 
 // VueJS setup
 // import { RouterLink, RouterView } from "vue-router";
-import GameBoard from "./components/GameBoard.vue";
-import ChatBox from "./components/ChatBox.vue";
 import HomePage from "./components/HomePage.vue";
+import GameArea from "./components/GameArea.vue";
 </script>
 
 <script>
 export default {
 	components: {
-		GameBoard,
-		ChatBox,
-		HomePage
+		HomePage,
+		GameArea
 	},
 	data() {
 		return {
 			displayHomePage: true,
-			constructGameBoard: false,
-			constructChatBox: false,
+			displayGameArea: false,
 			roomID: null,
 			socket: null
 		};
@@ -32,17 +29,34 @@ export default {
 			console.log(playRequest);
 			if (playRequest.action === "create") {
 				// create a room
-				const response = await axios(BackendURL + "/api/game/create", { method: "POST" });
+				const response = await axios("/api/game/create", { method: "POST" });
 				this.roomID = response.data;
 				this.displayHomePage = false;
-				this.constructGameBoard = true;
-				this.constructChatBox = true;
-			} else if (playRequest.action === "join" && playRequest.room !== undefined) {
-				// join a room
+				this.displayGameArea = true;
+			} else if (playRequest.action === "join" && typeof playRequest.room === "string") {
+				// Attempt to join a room
+				const response = await axios("/api/game/join/" + playRequest.room, { method: "POST" });
+				const result = response.data;
+				this.roomID = playRequest.room;
+				// if the room is joinable
+				if (result.available === true) {
+					this.displayHomePage = false;
+					this.displayGameArea = true;
+				} else {
+					// change this later
+					alert(result.errorMessage);
+				}
 			}
+		},
+		navHome() {
+			this.displayHomePage = true;
+			this.displayGameArea = false;
 		}
 	},
 	mounted() {
+		// Config axios
+		axios.defaults.baseURL = BackendURL;
+
 		// Crate the socket connection
 		this.socket = io(BackendURL);
 	}
@@ -52,12 +66,12 @@ export default {
 <template>
 	<div id="app">
 		<HomePage v-if="displayHomePage" v-on:playGame="playGame"></HomePage>
-		<GameBoard
-			v-if="constructGameBoard"
+		<GameArea
+			v-if="displayGameArea"
+			v-on:navHome="navHome"
 			v-bind:socket="socket"
 			v-bind:roomID="roomID"
-		></GameBoard>
-		<ChatBox v-if="constructChatBox"></ChatBox>
+		></GameArea>
 	</div>
 </template>
 

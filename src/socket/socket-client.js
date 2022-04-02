@@ -13,14 +13,10 @@ const leaveRoom = "leave room";
 /**
  * @param { Socket } socket
  * @param { HTMLElement } canvas
- * @param { String } roomID
- * @returns { void }
+ * @returns { CanvasEngine }
  */
-function setupSocketIOClient(socket, canvas, roomID) {
+function setupSocketIOClient(socket, canvas) {
 	const canvasEngine = new CanvasEngine(canvas);
-
-	// what to do next
-	socket.emit(joinRoom, roomID);
 
 	socket.on(currentGameStatus, (game) => {
 		game.players.forEach(player => {
@@ -39,7 +35,24 @@ function setupSocketIOClient(socket, canvas, roomID) {
 			canvasEngine.render("player", player.xCord, player.yCord);
 		});
 	});
-	return { socket, canvasEngine };
+
+	return canvasEngine;
+}
+
+/**
+ * @param { Socket } socket
+ * @param { String } roomID
+ */
+function join(socket, roomID) {
+	socket.emit(joinRoom, roomID);
+}
+
+/**
+ * @param { Socket } socket
+ * @param { String } roomID
+ */
+function leave(socket, roomID) {
+	socket.emit(leaveRoom, roomID);
 }
 
 function sendUserInput(socket, controller) {
@@ -66,5 +79,7 @@ function receiveUpdate(socket, canvasEngine) {
 export default {
 	setupSocketIOClient,
 	sendUserInput,
-	receiveUpdate
+	receiveUpdate,
+	join,
+	leave
 };
