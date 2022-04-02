@@ -21,35 +21,43 @@ export default {
 		GameBoard
 	},
 	props: {
-		roomID: String,
+		gameInfo: Object,
 		socket: Socket
 	},
 	watch: {
-		roomID() {
-			if (typeof this.roomID === "string" && this.roomID.length === 8) {
+		gameInfo: {
+			deep: true,
+			handler() {
+				const { playerName, roomID } = this.gameInfo;
+				if (typeof playerName !== "string" || playerName.trim().length === 0) {
+					return;
+				}
+				if (typeof roomID !== "string" || roomID.length !== 8) {
+					return;
+				}
 				this.initializeGame();
 			}
 		}
 	},
 	methods: {
 		initializeGame() {
-			console.log("id: " + this.roomID);
+			console.log("id: " + this.gameInfo.roomID);
 			console.log("ini");
 			// start updating for changes
 			this.controller.registerControlInterval();
 			// join the room
-			SocketClient.join(this.socket, this.roomID);
+			SocketClient.join(this.socket, this.gameInfo);
 		},
 		leaveGame() {
 			// stop listening for changes
 			this.controller.unregisterControlInterval();
 			// leave the room
-			SocketClient.leave(this.socket, this.roomID);
+			SocketClient.leave(this.socket, this.gameInfo);
 			// go back to the homepage
 			this.$emit("navHome");
 		},
 		copyPartyCode() {
-			navigator.clipboard.writeText(this.roomID);
+			navigator.clipboard.writeText(this.gameInfo.roomID);
 			this.copyCodeStatus = "Copied!!";
 			setTimeout(() => {
 				this.copyCodeStatus = "Copy Room Code";
@@ -79,10 +87,10 @@ export default {
 	<div id="component">
 		<nav id="game-nav">
 			<label v-on:click="leaveGame">Leave Room</label>
-			<span>Room Code: {{ roomID }}</span>
+			<span>Room Code: {{ gameInfo.roomID }}</span>
 			<label v-on:click="copyPartyCode">{{ copyCodeStatus }}</label>
 		</nav>
-		<GameBoard v-bind:socket="socket" v-bind:roomID="roomID"></GameBoard>
+		<GameBoard></GameBoard>
 		<ChatBox></ChatBox>
 	</div>
 </template>

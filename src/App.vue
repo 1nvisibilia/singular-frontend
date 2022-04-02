@@ -20,27 +20,41 @@ export default {
 		return {
 			displayHomePage: true,
 			displayGameArea: false,
-			roomID: null,
+			gameInfo: {
+				roomID: null,
+				playerName: null
+			},
 			socket: null
 		};
 	},
 	methods: {
 		async playGame(playRequest) {
+			if (playRequest.playerName.trim().length === 0) {
+				alert("you name cannot be empty or consists of only white spaces");
+				return;
+			}
 			if (playRequest.action === "create") {
 				// create a room
-				const response = await axios("/api/game/create", { method: "POST" });
+				const response = await axios.post("/api/game/create", {
+					playerName: playRequest.playerName
+				});
 				this.displayHomePage = false;
 				this.displayGameArea = true;
-				this.roomID = response.data;
+				this.gameInfo.roomID = response.data;
+				this.gameInfo.playerName = playRequest.playerName;
 			} else if (playRequest.action === "join" && typeof playRequest.room === "string") {
 				// Attempt to join a room
-				const response = await axios("/api/game/join/" + playRequest.room, { method: "POST" });
+				const response = await axios.post("/api/game/join/", {
+					playerName: playRequest.playerName,
+					roomID: playRequest.room
+				});
 				const result = response.data;
 				// if the room is joinable
 				if (result.available === true) {
 					this.displayHomePage = false;
 					this.displayGameArea = true;
-					this.roomID = playRequest.room;
+					this.gameInfo.roomID = playRequest.room;
+					this.gameInfo.playerName = playRequest.playerName;
 				} else {
 					// change this later
 					alert(result.errorMessage);
@@ -70,7 +84,7 @@ export default {
 			v-show="displayGameArea"
 			v-on:navHome="navHome"
 			v-bind:socket="socket"
-			v-bind:roomID="roomID"
+			v-bind:gameInfo="gameInfo"
 		></GameArea>
 	</div>
 </template>

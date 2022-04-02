@@ -1,5 +1,4 @@
 <script setup>
-import { Socket } from "socket.io-client";
 import { gameBoard } from "../UIData.json";
 </script>
 
@@ -12,11 +11,6 @@ export default {
 			borderWidth: 0
 		};
 	},
-	props: {
-		roomID: String,
-		socket: Socket
-	},
-	methods: {},
 	mounted() {
 		// Add the canvas size attribute.
 		this.width = gameBoard.width;

@@ -15,13 +15,15 @@ export default {
 		createRoom() {
 			this.$emit("playGame", {
 				action: "create",
-				room: undefined
+				room: undefined,
+				playerName: this.playerName
 			});
 		},
 		joinRoom(roomCode) {
 			this.$emit("playGame", {
 				action: "join",
-				room: roomCode
+				room: roomCode,
+				playerName: this.playerName
 			});
 		}
 	}

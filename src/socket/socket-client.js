@@ -41,18 +41,18 @@ function setupSocketIOClient(socket, canvas) {
 
 /**
  * @param { Socket } socket
- * @param { String } roomID
+ * @param { { roomID: String, playerName: String } } gameInfo
  */
-function join(socket, roomID) {
-	socket.emit(joinRoom, roomID);
+function join(socket, gameInfo) {
+	socket.emit(joinRoom, gameInfo);
 }
 
 /**
  * @param { Socket } socket
- * @param { String } roomID
+ * @param { { roomID: String, playerName: String } } gameInfo
  */
-function leave(socket, roomID) {
-	socket.emit(leaveRoom, roomID);
+function leave(socket, gameInfo) {
+	socket.emit(leaveRoom, gameInfo.roomID);
 }
 
 function sendUserInput(socket, controller) {
