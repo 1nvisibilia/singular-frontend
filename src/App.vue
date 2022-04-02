@@ -26,22 +26,21 @@ export default {
 	},
 	methods: {
 		async playGame(playRequest) {
-			console.log(playRequest);
 			if (playRequest.action === "create") {
 				// create a room
 				const response = await axios("/api/game/create", { method: "POST" });
-				this.roomID = response.data;
 				this.displayHomePage = false;
 				this.displayGameArea = true;
+				this.roomID = response.data;
 			} else if (playRequest.action === "join" && typeof playRequest.room === "string") {
 				// Attempt to join a room
 				const response = await axios("/api/game/join/" + playRequest.room, { method: "POST" });
 				const result = response.data;
-				this.roomID = playRequest.room;
 				// if the room is joinable
 				if (result.available === true) {
 					this.displayHomePage = false;
 					this.displayGameArea = true;
+					this.roomID = playRequest.room;
 				} else {
 					// change this later
 					alert(result.errorMessage);
@@ -53,21 +52,22 @@ export default {
 			this.displayGameArea = false;
 		}
 	},
-	mounted() {
+	created() {
 		// Config axios
 		axios.defaults.baseURL = BackendURL;
 
 		// Crate the socket connection
 		this.socket = io(BackendURL);
-	}
+	},
+	mounted() {}
 };
 </script>
 
 <template>
 	<div id="app">
-		<HomePage v-if="displayHomePage" v-on:playGame="playGame"></HomePage>
+		<HomePage v-show="displayHomePage" v-on:playGame="playGame"></HomePage>
 		<GameArea
-			v-if="displayGameArea"
+			v-show="displayGameArea"
 			v-on:navHome="navHome"
 			v-bind:socket="socket"
 			v-bind:roomID="roomID"

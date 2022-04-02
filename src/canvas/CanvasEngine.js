@@ -37,7 +37,6 @@ class CanvasEngine {
 		this.height = canvasElement.height;
 		this.animationStopper = true;
 		this.prevAnimationTimeStamp = 0;
-		console.log(this);
 	}
 
 	/**

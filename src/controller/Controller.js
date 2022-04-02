@@ -2,6 +2,7 @@ const mouse = "mouse";
 const move = "move";
 const click = "click";
 const both = "both";
+const controlDelta = 50;
 
 class Controller {
 	/**
@@ -141,6 +142,10 @@ class Controller {
 	 * @returns { void }
 	 */
 	registerControlInterval() {
+		if (this.controlInterval !== null) {
+			return;
+		}
+
 		// Register control listener to listen for changes in input
 		this.controlInterval = setInterval(() => {
 			if (this.inputState.up !== this.prevInputState.up ||
@@ -163,7 +168,7 @@ class Controller {
 				}
 				this.inputChanged = true;
 			}
-		}, 100);
+		}, controlDelta);
 	}
 
 	/**
@@ -171,6 +176,7 @@ class Controller {
 	 */
 	unregisterControlInterval() {
 		clearInterval(this.controlInterval);
+		this.controlInterval = null;
 	}
 }
 

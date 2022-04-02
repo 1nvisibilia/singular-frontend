@@ -24,9 +24,28 @@ export default {
 		roomID: String,
 		socket: Socket
 	},
+	watch: {
+		roomID() {
+			if (typeof this.roomID === "string" && this.roomID.length === 8) {
+				this.initializeGame();
+			}
+		}
+	},
 	methods: {
+		initializeGame() {
+			console.log("id: " + this.roomID);
+			console.log("ini");
+			// start updating for changes
+			this.controller.registerControlInterval();
+			// join the room
+			SocketClient.join(this.socket, this.roomID);
+		},
 		leaveGame() {
+			// stop listening for changes
+			this.controller.unregisterControlInterval();
+			// leave the room
 			SocketClient.leave(this.socket, this.roomID);
+			// go back to the homepage
 			this.$emit("navHome");
 		},
 		copyPartyCode() {
@@ -38,26 +57,20 @@ export default {
 		}
 	},
 	mounted() {
-		console.log(this.roomID);
-
+		console.log("mount");
 		// Adds the canvas size independent of Vue's renderings.
-		const gameCanvas = document.getElementById("game-canvas");
-		gameCanvas.width = UIData.gameBoard.width;
-		gameCanvas.height = UIData.gameBoard.height;
+		const canvasElement = document.getElementById("game-canvas");
+		canvasElement.width = UIData.gameBoard.width;
+		canvasElement.height = UIData.gameBoard.height;
 
 		// setup the game controllers
-		this.controller = new Controller(gameCanvas);
+		this.controller = new Controller(canvasElement);
 		this.controller.activeListeners(); // register all the event listener
-		this.controller.registerControlInterval(); // start listening for changes
 
-		console.log("ID :" + this.roomID);
 		// Setup the socket and Canvas rendering engine.
-		const canvasEngine = SocketClient.setupSocketIOClient(this.socket, gameCanvas);
-		SocketClient.join(this.socket, this.roomID);
+		this.canvasEngine = SocketClient.setupSocketIOClient(this.socket, canvasElement);
 		SocketClient.sendUserInput(this.socket, this.controller);
-		SocketClient.receiveUpdate(this.socket, canvasEngine);
-
-		this.canvasEngine = canvasEngine;
+		SocketClient.receiveUpdate(this.socket, this.canvasEngine);
 	}
 };
 </script>
