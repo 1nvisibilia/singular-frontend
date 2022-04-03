@@ -13,7 +13,11 @@ export default {
 		return {
 			copyCodeStatus: "Copy Room Code",
 			canvasEngine: null,
-			controller: null
+			controller: null,
+			messageObject: {
+				senderName: "",
+				message: ""
+			}
 		};
 	},
 	components: {
@@ -62,6 +66,10 @@ export default {
 			setTimeout(() => {
 				this.copyCodeStatus = "Copy Room Code";
 			}, 800);
+		},
+		sendMessage(message) {
+			SocketClient.sendMessage(this.socket, message);
+			console.log(message);
 		}
 	},
 	mounted() {
@@ -79,6 +87,9 @@ export default {
 		this.canvasEngine = SocketClient.setupSocketIOClient(this.socket, canvasElement);
 		SocketClient.sendUserInput(this.socket, this.controller);
 		SocketClient.receiveUpdate(this.socket, this.canvasEngine);
+		SocketClient.receiveMessage(this.socket, (messageObject) => {
+			this.messageObject = messageObject;
+		});
 	}
 };
 </script>
@@ -90,8 +101,10 @@ export default {
 			<span>Room Code: {{ gameInfo.roomID }}</span>
 			<label v-on:click="copyPartyCode">{{ copyCodeStatus }}</label>
 		</nav>
-		<GameBoard></GameBoard>
-		<ChatBox></ChatBox>
+		<div id="game-section">
+			<GameBoard></GameBoard>
+			<ChatBox v-on:sendMessage="sendMessage" v-bind:messageObject="messageObject"></ChatBox>
+		</div>
 	</div>
 </template>
 
@@ -119,5 +132,11 @@ export default {
 	border: 3px solid rgb(255, 0, 255);
 	width: 200px;
 	cursor: pointer;
+}
+
+#game-section {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
 }
 </style>

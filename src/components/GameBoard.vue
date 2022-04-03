@@ -22,6 +22,7 @@ export default {
 
 <template>
 	<div id="gameboard-container">
+		<div></div>
 		<canvas id="game-canvas" tabindex="0"></canvas>
 	</div>
 </template>
@@ -30,8 +31,6 @@ export default {
 #gameboard-container {
 	margin: 0 30px 0 0;
 	padding: 0;
-	display: inline-block;
-	left: 0px;
 	border-color: black;
 	border-width: v-bind(borderWidth + "px");
 	border-style: solid;

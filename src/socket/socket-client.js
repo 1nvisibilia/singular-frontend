@@ -9,6 +9,8 @@ const sendBackInput = "send back input";
 const sendGameData = "send game data";
 const joinRoom = "join room";
 const leaveRoom = "leave room";
+const sendChatMessage = "send chat message";
+const broadcastMessage = "broadcast message";
 
 /**
  * @param { Socket } socket
@@ -55,6 +57,20 @@ function leave(socket, gameInfo) {
 	socket.emit(leaveRoom, gameInfo.roomID);
 }
 
+function receiveMessage(socket, callBack) {
+	socket.on(broadcastMessage, (messageObject) => {
+		callBack(messageObject);
+	});
+}
+
+/**
+ * @param { Socket } socket
+ * @param { String } message
+ */
+function sendMessage(socket, message) {
+	socket.emit(sendChatMessage, message);
+}
+
 function sendUserInput(socket, controller) {
 	socket.on(requestInput, () => {
 		if (controller.inputChanged === true) {
@@ -81,5 +97,7 @@ export default {
 	sendUserInput,
 	receiveUpdate,
 	join,
-	leave
+	leave,
+	sendMessage,
+	receiveMessage
 };
