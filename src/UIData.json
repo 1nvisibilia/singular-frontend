@@ -14,11 +14,11 @@
 	"gameBoard": {
 		"width": 1000,
 		"height": 650,
-		"borderWidth": 3
+		"borderWidth": 4
 	},
 	"chatBox": {
 		"width": 300,
 		"height": 650,
-		"borderWidth": 3
+		"borderWidth": 4
 	}
 }
