@@ -9,6 +9,7 @@ export default {
 			width: 0,
 			height: 0,
 			borderWidth: 0,
+			nextChatID: 0,
 			chatMessage: "",
 			chatLog: []
 		};
@@ -20,7 +21,11 @@ export default {
 		messageObject: {
 			deep: false,
 			handler() {
-				this.chatLog.push({ ...this.messageObject });
+				this.chatLog.push({
+					...this.messageObject,
+					id: this.nextChatID
+				});
+				++this.nextChatID;
 			}
 		}
 	},
@@ -44,7 +49,7 @@ export default {
 	<div id="chatbox-container">
 		<div id="flow-chat-wrapper">
 			<div id="flow-chat">
-				<div id="message-box" v-for="messageInfo in chatLog">
+				<div id="message-box" v-for="messageInfo in chatLog" v-bind:key="messageInfo.id">
 					<span class="sender">{{ messageInfo.senderName }}:</span>
 					<span class="message-content">{{ messageInfo.message }}</span>
 				</div>
