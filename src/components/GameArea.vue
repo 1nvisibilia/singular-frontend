@@ -14,6 +14,7 @@ export default {
 			copyCodeStatus: "Copy Room Code",
 			canvasEngine: null,
 			controller: null,
+			playerStatus: [],
 			messageObject: {
 				senderName: "",
 				message: ""
@@ -70,6 +71,19 @@ export default {
 		sendMessage(message) {
 			SocketClient.sendMessage(this.socket, message);
 			console.log(message);
+		},
+		updateCallBack(game) {
+			game.players.forEach((player, index) => {
+				if (this.playerStatus.length < index + 1) {
+					this.playerStatus.push({
+						name: player.name,
+						health: player.health
+					});
+				} else {
+					this.playerStatus[index].name = player.name;
+					this.playerStatus[index].health = player.health;
+				}
+			});
 		}
 	},
 	mounted() {
@@ -86,7 +100,7 @@ export default {
 		// Setup the socket and Canvas rendering engine.
 		this.canvasEngine = SocketClient.setupSocketIOClient(this.socket, canvasElement);
 		SocketClient.sendUserInput(this.socket, this.controller);
-		SocketClient.receiveUpdate(this.socket, this.canvasEngine);
+		SocketClient.receiveUpdate(this.socket, this.canvasEngine, this.updateCallBack);
 		SocketClient.receiveMessage(this.socket, (messageObject) => {
 			this.messageObject = messageObject;
 		});
@@ -102,7 +116,7 @@ export default {
 			<label v-on:click="copyPartyCode">{{ copyCodeStatus }}</label>
 		</nav>
 		<div id="game-section">
-			<GameBoard></GameBoard>
+			<GameBoard v-bind:playerStatus="playerStatus"></GameBoard>
 			<ChatBox v-on:sendMessage="sendMessage" v-bind:messageObject="messageObject"></ChatBox>
 		</div>
 	</div>

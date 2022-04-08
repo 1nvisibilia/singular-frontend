@@ -1,15 +1,22 @@
 <script setup>
+import GameStatus from "./GameStatus.vue";
 import { gameBoard } from "../UIData.json";
 </script>
 
 <script>
 export default {
+	components: {
+		GameStatus
+	},
 	data() {
 		return {
 			width: 0,
 			height: 0,
 			borderWidth: 0
 		};
+	},
+	props: {
+		playerStatus: Array
 	},
 	mounted() {
 		// Add the canvas size attribute.
@@ -22,7 +29,7 @@ export default {
 
 <template>
 	<div id="gameboard-container">
-		<div></div>
+		<GameStatus v-bind:playerStatus="playerStatus"></GameStatus>
 		<canvas id="game-canvas" tabindex="0"></canvas>
 	</div>
 </template>

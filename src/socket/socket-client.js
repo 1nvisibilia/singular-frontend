@@ -85,10 +85,12 @@ function sendUserInput(socket, controller) {
 /**
  * @param { Socket } socket
  * @param { CanvasEngine } canvasEngine
+ * @param { Function } callBack
  */
-function receiveUpdate(socket, canvasEngine) {
+function receiveUpdate(socket, canvasEngine, callBack) {
 	socket.on(sendGameData, (game) => {
 		canvasEngine.startAnimation(game);
+		callBack(game);
 	});
 }
 
