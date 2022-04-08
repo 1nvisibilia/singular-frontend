@@ -13,7 +13,7 @@ export default {
 
 <template>
 	<div id="status-container">
-		<div class="status" v-for="singleStatus in playerStatus">
+		<div v-for="singleStatus in playerStatus">
 			<span class="status-name">{{ singleStatus.name }}</span>
 			<span class="status-health">
 				<div class="health-bar" v-bind:style="{ width: `${singleStatus.health * 10}%` }"></div>
@@ -31,9 +31,6 @@ export default {
 	position: absolute;
 	right: 0;
 	top: 0;
-}
-
-.status {
 }
 
 .status-name {

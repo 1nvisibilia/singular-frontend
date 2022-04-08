@@ -77,13 +77,14 @@ export default {
 				if (this.playerStatus.length < index + 1) {
 					this.playerStatus.push({
 						name: player.name,
-						health: player.health
+						health: player.health < 0 ? 0 : player.health
 					});
 				} else {
 					this.playerStatus[index].name = player.name;
-					this.playerStatus[index].health = player.health;
+					this.playerStatus[index].health = player.health < 0 ? 0 : player.health;
 				}
 			});
+			this.playerStatus = this.playerStatus.slice(0, game.players.length);
 		}
 	},
 	mounted() {
