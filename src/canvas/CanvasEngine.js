@@ -76,7 +76,9 @@ class CanvasEngine {
 			this.prevAnimationTimeStamp = frameRate;
 			this.clearScreen();
 			game.players.forEach((player) => {
-				this.render("player", player.xCord, player.yCord);
+				if (player.health > 0) {
+					this.render("player", player.xCord, player.yCord);
+				}
 			});
 
 			game.bullets.forEach((bullet) => {
