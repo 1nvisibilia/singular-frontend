@@ -15,7 +15,7 @@ export default {
 			chatMessage: "",
 			chatLog: [],
 			SocketEventMap: SocketClient.SocketEventMap,
-			systemSender: `<i style="color: #9932CC; font-weight: 600;">System</i>`
+			systemSender: `<i style="color: ${chatBox.systemColor}; font-weight: 600;">System</i>`
 		};
 	},
 	props: {
@@ -28,7 +28,7 @@ export default {
 			this.chatMessage = "";
 		},
 		registerSystemMessage() {
-			this.socket.on(this.SocketEventMap.currentGameStatus, (_game) => {
+			this.socket.on(this.SocketEventMap.currentGameStatus, (/* game */) => {
 				console.log("you joined the game room");
 				this.updateChat({
 					senderName: this.systemSender,
@@ -39,7 +39,7 @@ export default {
 			this.socket.on(this.SocketEventMap.aPlayerJoined, (player) => {
 				this.updateChat({
 					senderName: this.systemSender,
-					message: `<span style="color: #FFD700; font-weight: 600;">${player.name}</span> has joined the room.`
+					message: `<span style="color: ${chatBox.playerColor}; font-weight: 600;">${player.name}</span> has joined the room.`
 				});
 			});
 

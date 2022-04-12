@@ -19,6 +19,8 @@
 	"chatBox": {
 		"width": 300,
 		"height": 650,
-		"borderWidth": 4
+		"borderWidth": 4,
+		"systemColor": "#9932CC",
+		"playerColor": "#FFD700"
 	}
 }
