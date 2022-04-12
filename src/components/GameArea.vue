@@ -14,11 +14,7 @@ export default {
 			copyCodeStatus: "Copy Room Code",
 			canvasEngine: null,
 			controller: null,
-			playerStatus: [],
-			messageObject: {
-				senderName: "",
-				message: ""
-			}
+			playerStatus: []
 		};
 	},
 	components: {
@@ -68,10 +64,6 @@ export default {
 				this.copyCodeStatus = "Copy Room Code";
 			}, 800);
 		},
-		sendMessage(message) {
-			SocketClient.sendMessage(this.socket, message);
-			console.log(message);
-		},
 		updateCallBack(game) {
 			game.players.forEach((player, index) => {
 				if (this.playerStatus.length < index + 1) {
@@ -88,7 +80,6 @@ export default {
 		}
 	},
 	mounted() {
-		console.log("mount");
 		// Adds the canvas size independent of Vue's renderings.
 		const canvasElement = document.getElementById("game-canvas");
 		canvasElement.width = UIData.gameBoard.width;
@@ -102,9 +93,6 @@ export default {
 		this.canvasEngine = SocketClient.setupSocketIOClient(this.socket, canvasElement);
 		SocketClient.sendUserInput(this.socket, this.controller);
 		SocketClient.receiveUpdate(this.socket, this.canvasEngine, this.updateCallBack);
-		SocketClient.receiveMessage(this.socket, (messageObject) => {
-			this.messageObject = messageObject;
-		});
 	}
 };
 </script>
@@ -118,7 +106,7 @@ export default {
 		</nav>
 		<div id="game-section">
 			<GameBoard v-bind:playerStatus="playerStatus"></GameBoard>
-			<ChatBox v-on:sendMessage="sendMessage" v-bind:messageObject="messageObject"></ChatBox>
+			<ChatBox v-bind:socket="socket"></ChatBox>
 		</div>
 	</div>
 </template>

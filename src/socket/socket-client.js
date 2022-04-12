@@ -1,16 +1,18 @@
 import { Socket } from "socket.io-client";
 import CanvasEngine from "../canvas/CanvasEngine.js";
 
-const currentGameStatus = "current game status";
-const aPlayerJoined = "a user joined";
-const aPlayerLeft = "a player left";
-const requestInput = "request input";
-const sendBackInput = "send back input";
-const sendGameData = "send game data";
-const joinRoom = "join room";
-const leaveRoom = "leave room";
-const sendChatMessage = "send chat message";
-const broadcastMessage = "broadcast message";
+const SocketEventMap = {
+	currentGameStatus: "current game status",
+	aPlayerJoined: "a user joined",
+	aPlayerLeft: "a player left",
+	requestInput: "request input",
+	sendBackInput: "send back input",
+	sendGameData: "send game data",
+	joinRoom: "join room",
+	leaveRoom: "leave room",
+	sendChatMessage: "send chat message",
+	broadcastMessage: "broadcast message"
+};
 
 /**
  * @param { Socket } socket
@@ -20,18 +22,18 @@ const broadcastMessage = "broadcast message";
 function setupSocketIOClient(socket, canvas) {
 	const canvasEngine = new CanvasEngine(canvas);
 
-	socket.on(currentGameStatus, (game) => {
+	socket.on(SocketEventMap.currentGameStatus, (game) => {
 		game.players.forEach(player => {
 			canvasEngine.render("player", player.xCord, player.yCord);
 		});
 	});
 
-	socket.on(aPlayerJoined, (player) => {
+	socket.on(SocketEventMap.aPlayerJoined, (player) => {
 		canvasEngine.render("player", player.xCord, player.yCord);
-		console.log(player.id, "has joined us");
 	});
 
-	socket.on(aPlayerLeft, (game) => {
+	socket.on(SocketEventMap.aPlayerLeft, (eventInfoObject) => {
+		const game = eventInfoObject.game;
 		canvasEngine.clearScreen();
 		game.players.forEach(player => {
 			canvasEngine.render("player", player.xCord, player.yCord);
@@ -46,7 +48,7 @@ function setupSocketIOClient(socket, canvas) {
  * @param { { roomID: String, playerName: String } } gameInfo
  */
 function join(socket, gameInfo) {
-	socket.emit(joinRoom, gameInfo);
+	socket.emit(SocketEventMap.joinRoom, gameInfo);
 }
 
 /**
@@ -54,11 +56,11 @@ function join(socket, gameInfo) {
  * @param { { roomID: String, playerName: String } } gameInfo
  */
 function leave(socket, gameInfo) {
-	socket.emit(leaveRoom, gameInfo.roomID);
+	socket.emit(SocketEventMap.leaveRoom, gameInfo.roomID);
 }
 
 function receiveMessage(socket, callBack) {
-	socket.on(broadcastMessage, (messageObject) => {
+	socket.on(SocketEventMap.broadcastMessage, (messageObject) => {
 		callBack(messageObject);
 	});
 }
@@ -68,16 +70,16 @@ function receiveMessage(socket, callBack) {
  * @param { String } message
  */
 function sendMessage(socket, message) {
-	socket.emit(sendChatMessage, message);
+	socket.emit(SocketEventMap.sendChatMessage, message);
 }
 
 function sendUserInput(socket, controller) {
-	socket.on(requestInput, () => {
+	socket.on(SocketEventMap.requestInput, () => {
 		if (controller.inputChanged === true) {
 			controller.inputChanged = false;
-			socket.emit(sendBackInput, controller.inputState);
+			socket.emit(SocketEventMap.sendBackInput, controller.inputState);
 		} else {
-			socket.emit(sendBackInput, null);
+			socket.emit(SocketEventMap.sendBackInput, null);
 		}
 	});
 }
@@ -88,13 +90,14 @@ function sendUserInput(socket, controller) {
  * @param { Function } callBack
  */
 function receiveUpdate(socket, canvasEngine, callBack) {
-	socket.on(sendGameData, (game) => {
+	socket.on(SocketEventMap.sendGameData, (game) => {
 		canvasEngine.startAnimation(game);
 		callBack(game);
 	});
 }
 
 export default {
+	SocketEventMap,
 	setupSocketIOClient,
 	sendUserInput,
 	receiveUpdate,

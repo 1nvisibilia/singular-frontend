@@ -1,4 +1,6 @@
 <script setup>
+import { Socket } from "socket.io-client";
+import SocketClient from "../socket/socket-client";
 import { chatBox } from "../UIData.json";
 </script>
 
@@ -11,36 +13,61 @@ export default {
 			borderWidth: 0,
 			nextChatID: 0,
 			chatMessage: "",
-			chatLog: []
+			chatLog: [],
+			SocketEventMap: SocketClient.SocketEventMap,
+			systemSender: `<i style="color: #9932CC; font-weight: 600;">System</i>`
 		};
 	},
 	props: {
-		messageObject: Object
-	},
-	watch: {
-		messageObject: {
-			deep: false,
-			handler() {
-				this.chatLog.push({
-					...this.messageObject,
-					id: this.nextChatID
-				});
-				++this.nextChatID;
-			}
-		}
+		socket: Socket
 	},
 	methods: {
 		sendMessage() {
-			// emitter to parent
-			this.$emit("sendMessage", this.chatMessage);
+			SocketClient.sendMessage(this.socket, this.chatMessage);
 			// clear the input box
 			this.chatMessage = "";
+		},
+		registerSystemMessage() {
+			this.socket.on(this.SocketEventMap.currentGameStatus, (_game) => {
+				console.log("you joined the game room");
+				this.updateChat({
+					senderName: this.systemSender,
+					message: "You have joined the Room."
+				});
+			});
+
+			this.socket.on(this.SocketEventMap.aPlayerJoined, (player) => {
+				this.updateChat({
+					senderName: this.systemSender,
+					message: `<span style="color: #FFD700; font-weight: 600;">${player.name}</span> has joined the room.`
+				});
+			});
+
+			this.socket.on(this.SocketEventMap.aPlayerLeft, (eventInfoObject) => {
+				const playerLeftName = eventInfoObject.playerLeftName;
+				this.updateChat({
+					senderName: this.systemSender,
+					message: `<span style="color: #FFD700; font-weight: 600;">${playerLeftName}</span> has left the room.`
+				});
+			});
+		},
+		updateChat(messageObject) {
+			this.chatLog.push({
+				...messageObject,
+				id: this.nextChatID
+			});
+			++this.nextChatID;
 		}
 	},
 	mounted() {
 		this.width = chatBox.width;
 		this.height = chatBox.height;
 		this.borderWidth = chatBox.borderWidth;
+
+		this.registerSystemMessage();
+		SocketClient.receiveMessage(this.socket, (messageObject) => {
+			this.updateChat(messageObject);
+		});
 	}
 };
 </script>
@@ -50,8 +77,8 @@ export default {
 		<div id="flow-chat-wrapper">
 			<div id="flow-chat">
 				<div id="message-box" v-for="messageInfo in chatLog" v-bind:key="messageInfo.id">
-					<span class="sender">{{ messageInfo.senderName }}:</span>
-					<span class="message-content">{{ messageInfo.message }}</span>
+					<span class="sender" v-html="messageInfo.senderName + ' :'"></span>
+					<span class="message-content" v-html="messageInfo.message"></span>
 				</div>
 			</div>
 		</div>
