@@ -19,7 +19,8 @@ export default {
 		};
 	},
 	props: {
-		socket: Socket
+		socket: Socket,
+		roomID: String
 	},
 	methods: {
 		sendMessage() {
@@ -29,10 +30,9 @@ export default {
 		},
 		registerSystemMessage() {
 			this.socket.on(this.SocketEventMap.currentGameStatus, (/* game */) => {
-				console.log("you joined the game room");
 				this.updateChat({
 					senderName: this.systemSender,
-					message: "You have joined the Room."
+					message: `You have joined the room <i>${this.roomID}</i>`
 				});
 			});
 
@@ -48,6 +48,15 @@ export default {
 				this.updateChat({
 					senderName: this.systemSender,
 					message: `<span style="color: #FFD700; font-weight: 600;">${playerLeftName}</span> has left the room.`
+				});
+			});
+
+			this.socket.on(this.SocketEventMap.playersKilled, (killedNameQueue) => {
+				killedNameQueue.forEach((playerName) => {
+					this.updateChat({
+						senderName: this.systemSender,
+						message: `<span style="color: #FFD700; font-weight: 600;">${playerName}</span> has been destroyed.`
+					});
 				});
 			});
 		},

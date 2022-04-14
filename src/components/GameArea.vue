@@ -42,8 +42,6 @@ export default {
 	},
 	methods: {
 		initializeGame() {
-			console.log("id: " + this.gameInfo.roomID);
-			console.log("ini");
 			// start updating for changes
 			this.controller.registerControlInterval();
 			// join the room
@@ -64,7 +62,8 @@ export default {
 				this.copyCodeStatus = "Copy Room Code";
 			}, 800);
 		},
-		updateCallBack(game) {
+		updateHealthStatus(game) {
+			// update players' health status
 			game.players.forEach((player, index) => {
 				if (this.playerStatus.length < index + 1) {
 					this.playerStatus.push({
@@ -92,7 +91,10 @@ export default {
 		// Setup the socket and Canvas rendering engine.
 		this.canvasEngine = SocketClient.setupSocketIOClient(this.socket, canvasElement);
 		SocketClient.sendUserInput(this.socket, this.controller);
-		SocketClient.receiveUpdate(this.socket, this.canvasEngine, this.updateCallBack);
+		// Add update listener for canvas
+		SocketClient.receiveUpdate(this.socket, this.canvasEngine);
+		// Add update listener for health status
+		this.socket.on(SocketClient.SocketEventMap.sendGameData, this.updateHealthStatus);
 	}
 };
 </script>
@@ -106,7 +108,7 @@ export default {
 		</nav>
 		<div id="game-section">
 			<GameBoard v-bind:playerStatus="playerStatus"></GameBoard>
-			<ChatBox v-bind:socket="socket"></ChatBox>
+			<ChatBox v-bind:socket="socket" v-bind:roomID="gameInfo.roomID"></ChatBox>
 		</div>
 	</div>
 </template>

@@ -5,6 +5,7 @@ const SocketEventMap = {
 	currentGameStatus: "current game status",
 	aPlayerJoined: "a user joined",
 	aPlayerLeft: "a player left",
+	playersKilled: "players killed",
 	requestInput: "request input",
 	sendBackInput: "send back input",
 	sendGameData: "send game data",
@@ -87,12 +88,10 @@ function sendUserInput(socket, controller) {
 /**
  * @param { Socket } socket
  * @param { CanvasEngine } canvasEngine
- * @param { Function } callBack
  */
-function receiveUpdate(socket, canvasEngine, callBack) {
+function receiveUpdate(socket, canvasEngine) {
 	socket.on(SocketEventMap.sendGameData, (game) => {
 		canvasEngine.startAnimation(game);
-		callBack(game);
 	});
 }
 
