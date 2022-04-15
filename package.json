@@ -12,6 +12,7 @@
     "animejs": "^3.2.1",
     "axios": "^0.26.0",
     "socket.io-client": "^4.4.1",
+    "vite": "^2.9.5",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12"
   },
@@ -19,7 +20,6 @@
     "@types/animejs": "^3.1.4",
     "@vitejs/plugin-vue": "^2.1.0",
     "eslint": "^8.5.0",
-    "eslint-plugin-vue": "^8.2.0",
-    "vite": "^2.7.13"
+    "eslint-plugin-vue": "^8.2.0"
   }
 }
