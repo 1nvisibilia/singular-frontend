@@ -53,6 +53,10 @@ export default {
 				if (result.available === true) {
 					this.displayHomePage = false;
 					this.displayGameArea = true;
+					// make sure to trigger the watcher in Game Area
+					if (this.gameInfo.roomID === playRequest.room) {
+						this.gameInfo.roomID = "";
+					}
 					this.gameInfo.roomID = playRequest.room;
 					this.gameInfo.playerName = playRequest.playerName;
 				} else {
