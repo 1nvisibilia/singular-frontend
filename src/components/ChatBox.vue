@@ -23,6 +23,9 @@ export default {
 		roomID: String
 	},
 	methods: {
+		updateMessageBox(event) {
+			this.chatMessage = event.target.value;
+		},
 		sendMessage() {
 			SocketClient.sendMessage(this.socket, this.chatMessage);
 			// clear the input box
@@ -93,7 +96,8 @@ export default {
 		</div>
 		<input
 			id="chat-input"
-			v-model="chatMessage"
+			v-bind:value="chatMessage"
+			v-on:input="updateMessageBox"
 			v-on:keyup.enter="sendMessage"
 			placeholder="Press ENTER to send..."
 		/>
