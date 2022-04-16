@@ -74,7 +74,11 @@ class Controller {
 	 * @returns { void }
 	 */
 	activeListeners() {
-		this.element.addEventListener("keyup", (event) => {
+		document.addEventListener("keyup", (event) => {
+			// If the user isn't focusing on the body nor the canvas, discard the event
+			if (!(event.target instanceof HTMLBodyElement) && event.target.id !== this.element.id) {
+				return;
+			}
 			const keyName = event.key;
 			switch (keyName) {
 				case "a":
@@ -96,7 +100,11 @@ class Controller {
 			}
 		});
 
-		this.element.addEventListener("keydown", (event) => {
+		document.addEventListener("keydown", (event) => {
+			// If the user isn't focusing on the body nor the canvas, discard the event
+			if (!(event.target instanceof HTMLBodyElement) && event.target.id !== this.element.id) {
+				return;
+			}
 			const keyName = event.key;
 			switch (keyName) {
 				case "a":
