@@ -1,3 +1,4 @@
+import Color from "color";
 import CanvasData from "../UIData.json";
 
 class CanvasEngine {
@@ -43,8 +44,9 @@ class CanvasEngine {
 	 * @param { String } entityType
 	 * @param { Number } xCord
 	 * @param { Number } yCord
+	 * @param { String } color
 	 */
-	render(entityType, xCord, yCord) {
+	render(entityType, xCord, yCord, color = "#9BA1FF") {
 		const entityData = CanvasData[entityType];
 		if (entityData === undefined) {
 			throw new Error("Undefined Entity Type!");
@@ -53,9 +55,9 @@ class CanvasEngine {
 		this.context.lineWidth = entityData.borderWidth;
 		this.context.beginPath();
 		this.context.arc(xCord, yCord, entityData.radius, 0, Math.PI * 2);
-		this.context.strokeStyle = entityData.border;
+		this.context.strokeStyle = Color(color).darken(0.5).hex();
 		this.context.stroke();
-		this.context.fillStyle = entityData.color;
+		this.context.fillStyle = color;
 		this.context.fill();
 	}
 
@@ -77,7 +79,7 @@ class CanvasEngine {
 			this.clearScreen();
 			game.players.forEach((player) => {
 				if (player.health > 0) {
-					this.render("player", player.xCord, player.yCord);
+					this.render("player", player.xCord, player.yCord, player.color);
 				}
 			});
 

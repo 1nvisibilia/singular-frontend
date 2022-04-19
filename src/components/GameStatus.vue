@@ -14,9 +14,17 @@ export default {
 <template>
 	<div id="status-container">
 		<div v-for="singleStatus in playerStatus" v-bind:key="singleStatus.name">
-			<span class="status-name">{{ singleStatus.name }}</span>
+			<span class="status-name" v-bind:style="{ color: singleStatus.color }">
+				{{ singleStatus.name }}
+			</span>
 			<span class="status-health">
-				<div class="health-bar" v-bind:style="{ width: `${singleStatus.health}%` }"></div>
+				<div
+					class="health-bar"
+					v-bind:style="{
+						width: `${singleStatus.health}%`,
+						backgroundColor: singleStatus.color
+					}"
+				></div>
 			</span>
 		</div>
 	</div>

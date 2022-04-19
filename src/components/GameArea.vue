@@ -14,6 +14,9 @@ export default {
 			copyCodeStatus: "Copy Room Code",
 			canvasEngine: null,
 			controller: null,
+			/**
+			 * @type { Array<{ name: String, color: String, health: Number }>}
+			 */
 			playerStatus: []
 		};
 	},
@@ -68,11 +71,13 @@ export default {
 				if (this.playerStatus.length < index + 1) {
 					this.playerStatus.push({
 						name: player.name,
-						health: player.health < 0 ? 0 : player.health
+						health: player.health < 0 ? 0 : player.health,
+						color: player.color
 					});
 				} else {
 					this.playerStatus[index].name = player.name;
 					this.playerStatus[index].health = player.health < 0 ? 0 : player.health;
+					this.playerStatus[index].color = player.color;
 				}
 			});
 			this.playerStatus = this.playerStatus.slice(0, game.players.length);
