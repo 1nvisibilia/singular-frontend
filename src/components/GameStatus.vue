@@ -42,8 +42,9 @@ export default {
 }
 
 .status-name {
+	font-weight: 600;
 	display: inline-block;
-	width: 70px;
+	width: 100px;
 	margin-right: 5px;
 }
 

@@ -16,7 +16,6 @@
 		"width": 300,
 		"height": 650,
 		"borderWidth": 4,
-		"systemColor": "#9932CC",
-		"playerColor": "#FFD700"
+		"systemColor": "#000000"
 	}
 }
